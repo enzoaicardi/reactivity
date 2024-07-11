@@ -5,6 +5,10 @@ export class Signal<Type> {
     /** @internal */
     dependencies: Set<Reactive>;
 
+    /**
+     * create a signal
+     * @param {Type?} value the inital signal state
+     */
     constructor(value?: Type) {
         if (typeof value !== "undefined") {
             this.value = value;
@@ -15,7 +19,7 @@ export class Signal<Type> {
     /**
      * method used to retrieve the value of a signal
      * while adding the current reactive function to the dependencies
-     * @returns {Type}
+     * @returns {Type} the signal value
      */
     get(): Type {
         // retrieve the current reactive function
@@ -34,7 +38,7 @@ export class Signal<Type> {
     /**
      * method used to update the value of a signal
      * while triggering all the reactive functions in the dependencies
-     * @param value the new signal value
+     * @param {Type} value the new signal value
      */
     set(value: Type): Type {
         // if the value has changed
@@ -51,9 +55,9 @@ export class Signal<Type> {
     }
 
     /**
-     * method used to remove a reactive function from dependencies
+     * method used to remove a reactive function from dependencies or ...
      * method used to remove all reactive functions from dependencies
-     * @param reactive the reactive function to be deleted
+     * @param {Reactive?} reactive the reactive function to be cleared
      */
     delete(reactive?: Reactive): void {
         if (reactive) {
@@ -76,11 +80,14 @@ export class ComputedSignal<Type> extends Signal<Type> {
     /** @internal */
     computation: (value: any) => Type;
     /** @internal */
-    reactive: Reactive;
+    reactive: Reactive | undefined;
     /** @internal */
     entry: any;
 
-    /** @see Signal.constructor */
+    /**
+     * @see Signal.constructor create a computed signal
+     * @param {Function} computation the signal computation function
+     */
     constructor(computation: (value: any) => Type) {
         super();
         this.computation = computation;
@@ -89,8 +96,7 @@ export class ComputedSignal<Type> extends Signal<Type> {
     }
 
     /**
-     * @see Signal.set
-     * executes the calculation function before returning the new value
+     * @see Signal.set executes the calculation function before returning the new value
      */
     set(value?: any): Type {
         // the current input is saved for signal recalculations
@@ -102,16 +108,16 @@ export class ComputedSignal<Type> extends Signal<Type> {
     }
 
     /**
-     * @see Signal.delete
-     * remove the entry property before clearing dependencies
+     * @see Signal.delete remove the entry property before clearing dependencies
      */
     delete(reactive?: Reactive): void {
         // clear entry value
         delete this.entry;
 
-        if (!reactive) {
+        if (!reactive && this.reactive) {
             // clear reactive computation dependencies
             this.reactive.delete();
+            delete this.reactive;
         }
 
         // clear dependencies

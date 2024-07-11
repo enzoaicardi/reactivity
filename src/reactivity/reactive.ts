@@ -12,11 +12,20 @@ export class Reactive {
     /** @internal */
     static initial: Reactive | null = null;
 
-    // shortcut for constructor and instance.use
-    // used to avoid static analysis warnings
+    /**
+     * shortcut for constructor and instance.use
+     * used to avoid static analysis warnings
+     * @param func the reactive callback
+     * @param {...any?} args the reactive function arguments
+     * @returns {any} the reative function result
+     */
     static use = (func: Function, ...args: any): any =>
         new Reactive(func).use(...args);
 
+    /**
+     * create a reactive function
+     * @param {Function} func the reactive callback
+     */
     constructor(func: Function) {
         this.value = func;
         this.dependencies = new Set();
@@ -25,7 +34,7 @@ export class Reactive {
 
     /**
      * method used to manually add the reactive function to signal dependencies
-     * @param signal the signal in which to add the dependency
+     * @param {Signal} signal the signal in which to add the dependency
      */
     add(signal: Signal<any>): void {
         this.dependencies.add(signal);
@@ -35,7 +44,7 @@ export class Reactive {
     /**
      * method used to trigger the reactive function
      * while changing the value of the current reactive function
-     * @param args the reactive function arguments
+     * @param {...any?} args the reactive function arguments
      * @returns {any} the reative function result
      */
     use(...args: any): any {
@@ -61,9 +70,9 @@ export class Reactive {
     }
 
     /**
-     * method used to remove a signal from dependencies
+     * method used to remove a signal from dependencies or ...
      * method used to remove all signals from dependencies
-     * @param reactive the signal to be deleted
+     * @param {Signal?} signal the signal to be cleared
      */
     delete(signal?: Signal<any>): void {
         if (signal) {

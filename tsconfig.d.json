@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "module": "esnext",
+        "target": "esnext",
+        "lib": ["esnext", "dom"],
+        "declaration": true,
+        "emitDeclarationOnly": true,
+        "stripInternal": true,
+        "outFile": "dist/index"
+    },
+    "rootDir": "src",
+    "include": ["src"]
+}

@@ -1,0 +1,56 @@
+{
+    "name": "@enzoaicardi/reactivity",
+    "type": "module",
+    "version": "0.1.0",
+    "description": "A small modular interface for using signals in javascript",
+    "homepage": "https://github.com/enzoaicardi/reactivity",
+    "bugs": "https://github.com/enzoaicardi/reactivity/issues",
+    "author": {
+        "name": "Enzo Aicardi",
+        "url": "https://enzo.aicardi.pro"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/enzoaicardi/reactivity"
+    },
+    "main": "./esm/reactivity.js",
+    "module": "./esm/reactivity.js",
+    "browser": "./esm/reactivity.js",
+    "types": "./index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./index.d.ts",
+            "require": "./cjs/reactivity.cjs",
+            "import": "./esm/reactivity.js",
+            "browser": "./esm/reactivity.js",
+            "default": "./esm/reactivity.js"
+        },
+        "./esm": {
+            "types": "./index.d.ts",
+            "default": "./esm/reactivity.js"
+        },
+        "./cjs": {
+            "types": "./index.d.ts",
+            "default": "./cjs/reactivity.cjs"
+        },
+        "./umd": {
+            "types": "./index.d.ts",
+            "default": "./umd/reactivity.js"
+        },
+        "./iife": {
+            "types": "./index.d.ts",
+            "default": "./iife/reactivity.js"
+        }
+    },
+    "keywords": [
+        "javascript",
+        "reactive",
+        "signal",
+        "state",
+        "es6"
+    ],
+    "scripts": {
+        "test": "echo \"No test specified\""
+    },
+    "license": "GPL-3.0-only"
+}

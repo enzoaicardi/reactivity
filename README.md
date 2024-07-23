@@ -9,7 +9,7 @@ _A small modular interface for using signals in javascript_
 
 # What is a signal ?
 
-> Largely inspired by the proposed [tc39 specification proposal](https://github.com/tc39/proposal-signals)
+> Largely inspired by the [tc39 specification proposal](https://github.com/tc39/proposal-signals)
 
 A signal is an object that represents a state, and has methods for retrieving the current state (reading the value) and methods for changing the state (writing the value).
 

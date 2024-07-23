@@ -47,7 +47,7 @@ export class Signal<Type> {
             this.value = value;
             // trigger all the reactive functions in the dependencies
             for (const reactive of this.dependencies) {
-                reactive.value();
+                reactive.use();
             }
         }
         // return the signal value

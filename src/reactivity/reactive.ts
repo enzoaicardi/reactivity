@@ -48,25 +48,23 @@ export class Reactive {
      * @returns {any} the reative function result
      */
     use(...args: any): any {
-        // the value of the current reactive function is changed only
-        // when the function is triggered for the first time
-        // so the function can be re-triggered manually without any side effects
+        // save the initial reactive function state
+        Reactive.initial = Reactive.current;
+        // switch the current reactive function
+        Reactive.current = this.registered ? null : this;
+
+        // toggle registred status
         if (!this.registered) {
             this.registered = true;
-
-            // switch the current reactive function
-            Reactive.initial = Reactive.current;
-            Reactive.current = this;
-
-            const value = this.value(...args);
-
-            // switch back the current reactive function to initial state
-            Reactive.current = Reactive.initial;
-
-            return value;
-        } else {
-            return this.value(...args);
         }
+
+        // trigger the reactive function and store the value
+        const value = this.value(...args);
+
+        // switch back the current reactive function to initial state
+        Reactive.current = Reactive.initial;
+
+        return value;
     }
 
     /**

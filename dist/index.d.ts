@@ -20,11 +20,14 @@ declare module "reactivity/signal" {
          */
         set(value: Type): Type;
         /**
-         * method used to remove a reactive function from dependencies or ...
-         * method used to remove all reactive functions from dependencies
-         * @param {Reactive?} reactive the reactive function to be cleared
+         * method used to remove a reactive function from dependencies
+         * @param {Reactive} reactive the reactive function to be cleared
          */
-        delete(reactive?: Reactive): void;
+        delete(reactive: Reactive): void;
+        /**
+         * method used to remove all reactive functions from dependencies
+         */
+        clear(): void;
     }
     export class ComputedSignal<Type> extends Signal<Type> {
         /**
@@ -37,9 +40,9 @@ declare module "reactivity/signal" {
          */
         set(value?: any): Type;
         /**
-         * @see Signal.delete remove the entry property before clearing dependencies
+         * @see Signal.clear remove the entry property before clearing dependencies
          */
-        delete(reactive?: Reactive): void;
+        clear(): void;
     }
 }
 declare module "reactivity/reactive" {
@@ -72,11 +75,14 @@ declare module "reactivity/reactive" {
          */
         use(...args: any): any;
         /**
-         * method used to remove a signal from dependencies or ...
-         * method used to remove all signals from dependencies
-         * @param {Signal?} signal the signal to be cleared
+         * method used to remove a signal from dependencies
+         * @param {Signal} signal the signal to be cleared
          */
-        delete(signal?: Signal<any>): void;
+        delete(signal: Signal<any>): void;
+        /**
+         * method used to remove all signals from dependencies
+         */
+        clear(): void;
     }
 }
 declare module "reactivity" {

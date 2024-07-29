@@ -4,7 +4,9 @@ A computed signal is a signal whose value is determined by a function. This make
 
 ```js
 // create a new ComputedSignal
-const computedSignal = new ComputedSignal((value) => (value || "initial") + " state");
+const computedSignal = new ComputedSignal(
+    (value) => (value || "initial") + " state"
+);
 
 // get the ComputedSignal value
 const computedSignalValue = computedSignal.get();
@@ -15,7 +17,8 @@ const computedSignalSilentValue = computedSignal.value;
 computedSignal.set("new"); // update the ComputedSignal value
 computedSignal.value = "new state"; //!\\ update the ComputedSignal value without triggering dependencies
 
-computedSignal.delete(reactiveFunction? /* optional */) // clear the ComputedSignal dependenc(y.ies)
+computedSignal.delete(reactiveFunction); // clear the reactiveFunction in ComputedSignal dependencies
+computedSignal.clear(); // clear all ComputedSignal dependencies
 ```
 
 If a computed signal contains references to other signals, then its value will be updated when the signal values change.

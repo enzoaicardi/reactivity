@@ -55,24 +55,26 @@ export class Signal<Type> {
     }
 
     /**
-     * method used to remove a reactive function from dependencies or ...
-     * method used to remove all reactive functions from dependencies
-     * @param {Reactive?} reactive the reactive function to be cleared
+     * method used to remove a reactive function from dependencies
+     * @param {Reactive} reactive the reactive function to be cleared
      */
-    delete(reactive?: Reactive): void {
-        if (reactive) {
-            // remove the reactive function from dependencies
-            this.dependencies.delete(reactive);
-            // remove the signal from reactive function's dependencies
+    delete(reactive: Reactive): void {
+        // remove the reactive function from dependencies
+        this.dependencies.delete(reactive);
+        // remove the signal from reactive function's dependencies
+        reactive.dependencies.delete(this);
+    }
+
+    /**
+     * method used to remove all reactive functions from dependencies
+     */
+    clear(): void {
+        // remove the signal from all reactive function's dependencies
+        for (const reactive of this.dependencies) {
             reactive.dependencies.delete(this);
-        } else {
-            // remove the signal from all reactive function's dependencies
-            for (const reactive of this.dependencies) {
-                reactive.dependencies.delete(this);
-            }
-            // clear all dependencies
-            this.dependencies.clear();
         }
+        // clear all dependencies
+        this.dependencies.clear();
     }
 }
 
@@ -108,19 +110,16 @@ export class ComputedSignal<Type> extends Signal<Type> {
     }
 
     /**
-     * @see Signal.delete remove the entry property before clearing dependencies
+     * @see Signal.clear remove the entry property before clearing dependencies
      */
-    delete(reactive?: Reactive): void {
-        // clear entry value
+    clear(): void {
+        // clear default value
         delete this.entry;
-
-        if (!reactive && this.reactive) {
-            // clear reactive computation dependencies
-            this.reactive.delete();
-            delete this.reactive;
+        // clear reactive computation dependencies
+        if (this.reactive) {
+            this.reactive.clear();
         }
-
         // clear dependencies
-        super.delete(reactive);
+        super.clear();
     }
 }

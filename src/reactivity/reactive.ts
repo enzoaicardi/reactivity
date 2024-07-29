@@ -68,23 +68,25 @@ export class Reactive {
     }
 
     /**
-     * method used to remove a signal from dependencies or ...
-     * method used to remove all signals from dependencies
-     * @param {Signal?} signal the signal to be cleared
+     * method used to remove a signal from dependencies
+     * @param {Signal} signal the signal to be cleared
      */
-    delete(signal?: Signal<any>): void {
-        if (signal) {
-            // remove the signal from dependencies
-            this.dependencies.delete(signal);
-            // remove the reactive function from signal's dependencies
+    delete(signal: Signal<any>): void {
+        // remove the signal from dependencies
+        this.dependencies.delete(signal);
+        // remove the reactive function from signal's dependencies
+        signal.dependencies.delete(this);
+    }
+
+    /**
+     * method used to remove all signals from dependencies
+     */
+    clear(): void {
+        // remove the reactive function from all signals dependencies
+        for (const signal of this.dependencies) {
             signal.dependencies.delete(this);
-        } else {
-            // remove the reactive function from all signals dependencies
-            for (const signal of this.dependencies) {
-                signal.dependencies.delete(this);
-            }
-            // clear all dependencies
-            this.dependencies.clear();
         }
+        // clear all dependencies
+        this.dependencies.clear();
     }
 }

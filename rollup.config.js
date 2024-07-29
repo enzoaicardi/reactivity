@@ -32,6 +32,7 @@ export default formats.map(function (format) {
                             "use",
                             "add",
                             "delete",
+                            "clear",
                         ],
                     },
                 },

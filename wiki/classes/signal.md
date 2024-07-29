@@ -8,5 +8,6 @@ const signalSilentValue = signal.value; // get the Signal value without register
 signal.set("new state"); // update the Signal value
 signal.value = "new state"; //!\\ update the Signal value without triggering dependencies
 
-signal.delete(reactiveFunction? /* optional */) // clear the Signal dependenc(y.ies)
+signal.delete(reactiveFunction); // clear the reactiveFunction in Signal dependencies
+signal.clear(); // clear all Signal dependencies
 ```

@@ -16,5 +16,6 @@ reactiveFunction.add(signal); // manually add the reactive function to signal de
 // manually trigger the reactive function and populate signals dependencies
 const result = reactiveFunction.use(...args);
 
-reactiveFunction.delete(signal? /* optional */) // clear the Signal dependenc(y.ies)
+reactiveFunction.delete(signal); // clear the signal in Reactive dependencies
+reactiveFunction.clear(); // clear all Reactive dependencies
 ```

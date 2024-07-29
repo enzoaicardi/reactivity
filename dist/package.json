@@ -1,7 +1,7 @@
 {
     "name": "@enzoaicardi/reactivity",
     "type": "module",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "description": "A small modular interface for using signals in javascript",
     "homepage": "https://github.com/enzoaicardi/reactivity",
     "bugs": "https://github.com/enzoaicardi/reactivity/issues",

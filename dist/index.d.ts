@@ -1,3 +1,4 @@
+declare module "reactivity/symbols" { }
 declare module "reactivity/signal" {
     import { Reactive } from "reactivity/reactive";
     export class Signal<Type> {

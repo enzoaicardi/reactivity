@@ -1,16 +1,17 @@
 import { Signal } from "./signal";
+import { Symbols } from "./symbols";
 
 export class Reactive {
     value: Function;
     /** @internal */
-    dependencies: Set<Signal<any>>;
+    [Symbols.dependencies]: Set<Signal<any>>;
     /** @internal */
-    registered: boolean;
+    [Symbols.registered]: boolean;
 
     /** @internal */
-    static current: Reactive | null = null;
+    static [Symbols.current]: Reactive | null = null;
     /** @internal */
-    static initial: Reactive | null = null;
+    static [Symbols.initial]: Reactive | null = null;
 
     /**
      * shortcut for constructor and instance.use
@@ -28,8 +29,8 @@ export class Reactive {
      */
     constructor(func: Function) {
         this.value = func;
-        this.dependencies = new Set();
-        this.registered = false;
+        this[Symbols.dependencies] = new Set();
+        this[Symbols.registered] = false;
     }
 
     /**
@@ -37,8 +38,8 @@ export class Reactive {
      * @param {Signal} signal the signal in which to add the dependency
      */
     add(signal: Signal<any>): void {
-        this.dependencies.add(signal);
-        signal.dependencies.add(this);
+        this[Symbols.dependencies].add(signal);
+        signal[Symbols.dependencies].add(this);
     }
 
     /**
@@ -49,20 +50,20 @@ export class Reactive {
      */
     use(...args: any): any {
         // save the initial reactive function state
-        Reactive.initial = Reactive.current;
+        Reactive[Symbols.initial] = Reactive[Symbols.current];
         // switch the current reactive function
-        Reactive.current = this.registered ? null : this;
+        Reactive[Symbols.current] = this[Symbols.registered] ? null : this;
 
-        // toggle registred status
-        if (!this.registered) {
-            this.registered = true;
+        // toggle registered status
+        if (!this[Symbols.registered]) {
+            this[Symbols.registered] = true;
         }
 
         // trigger the reactive function and store the value
         const value = this.value(...args);
 
         // switch back the current reactive function to initial state
-        Reactive.current = Reactive.initial;
+        Reactive[Symbols.current] = Reactive[Symbols.initial];
 
         return value;
     }
@@ -73,9 +74,9 @@ export class Reactive {
      */
     delete(signal: Signal<any>): void {
         // remove the signal from dependencies
-        this.dependencies.delete(signal);
+        this[Symbols.dependencies].delete(signal);
         // remove the reactive function from signal's dependencies
-        signal.dependencies.delete(this);
+        signal[Symbols.dependencies].delete(this);
     }
 
     /**
@@ -83,10 +84,10 @@ export class Reactive {
      */
     clear(): void {
         // remove the reactive function from all signals dependencies
-        for (const signal of this.dependencies) {
-            signal.dependencies.delete(this);
+        for (const signal of this[Symbols.dependencies]) {
+            signal[Symbols.dependencies].delete(this);
         }
         // clear all dependencies
-        this.dependencies.clear();
+        this[Symbols.dependencies].clear();
     }
 }

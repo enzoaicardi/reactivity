@@ -2,7 +2,8 @@
     "type": "module",
     "scripts": {
         "build": "rollup --config rollup.config.js && tsc --project tsconfig.d.json",
-        "dev": "rollup --config rollup.config.js --watch"
+        "dev": "rollup --config rollup.config.js --watch",
+        "declare": "tsc --project tsconfig.d.json"
     },
     "devDependencies": {
         "@rollup/plugin-terser": "^0.4.4",

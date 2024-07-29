@@ -33,6 +33,7 @@ export default formats.map(function (format) {
                             "add",
                             "delete",
                             "clear",
+                            "entry",
                         ],
                     },
                 },

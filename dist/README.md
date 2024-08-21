@@ -4,6 +4,7 @@ _A small modular interface for using signals in javascript_
 
 [![NPM Version](https://img.shields.io/npm/v/@enzoaicardi/reactivity.svg?style=for-the-badge)](https://www.npmjs.com/package/@enzoaicardi/reactivity)
 [![NPM Downloads](https://img.shields.io/npm/dm/@enzoaicardi/reactivity.svg?style=for-the-badge)](https://www.npmjs.com/package/@enzoaicardi/reactivity)
+[![Bundle Size](https://img.shields.io/bundlephobia/minzip/@enzoaicardi/reactivity?style=for-the-badge)](https://www.npmjs.com/package/@enzoaicardi/reactivity)
 [![JSDelivr Hits](https://img.shields.io/jsdelivr/npm/hm/@enzoaicardi/reactivity?style=for-the-badge)](https://www.jsdelivr.com/package/npm/@enzoaicardi/reactivity)
 [![Wiki](https://img.shields.io/badge/Wiki-Documentation-blue?style=for-the-badge)](https://github.com/enzoaicardi/reactivity/tree/main/wiki/README.md)
 

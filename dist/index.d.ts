@@ -1,6 +1,6 @@
-declare module "reactivity/symbols" { }
-declare module "reactivity/signal" {
-    import { Reactive } from "reactivity/reactive";
+declare module "@enzoaicardi/reactivity/symbols" { }
+declare module "@enzoaicardi/reactivity/signal" {
+    import { Reactive } from "@enzoaicardi/reactivity/reactive";
     export class Signal<Type> {
         value: Type;
         /**
@@ -46,8 +46,8 @@ declare module "reactivity/signal" {
         clear(): void;
     }
 }
-declare module "reactivity/reactive" {
-    import { Signal } from "reactivity/signal";
+declare module "@enzoaicardi/reactivity/reactive" {
+    import { Signal } from "@enzoaicardi/reactivity/signal";
     export class Reactive {
         value: Function;
         /**
@@ -86,8 +86,8 @@ declare module "reactivity/reactive" {
         clear(): void;
     }
 }
-declare module "reactivity" {
-    import { Reactive } from "reactivity/reactive";
-    import { ComputedSignal, Signal } from "reactivity/signal";
+declare module "@enzoaicardi/reactivity" {
+    import { Reactive } from "@enzoaicardi/reactivity/reactive";
+    import { ComputedSignal, Signal } from "@enzoaicardi/reactivity/signal";
     export { Signal as Signal, ComputedSignal as ComputedSignal, Reactive as Reactive, };
 }

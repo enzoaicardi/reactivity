@@ -5,7 +5,7 @@ const formats = ["iife", "esm", "cjs", "umd"];
 
 export default formats.map(function (format) {
     return {
-        input: "src/reactivity.ts",
+        input: "src/@enzoaicardi/reactivity.ts",
         output: {
             file: `dist/${format}/reactivity.${
                 format === "cjs" ? "cjs" : "js"

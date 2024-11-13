@@ -1,10 +1,11 @@
 import { Reactive } from "./reactive";
 import { Symbols } from "./symbols";
+import { AnyFunction } from "./types";
 
 export class Signal<Type> {
     value: Type;
     /** @internal */
-    [Symbols.dependencies]: Set<Reactive>;
+    [Symbols.dependencies]: Set<Reactive<AnyFunction>>;
 
     /**
      * create a signal
@@ -56,10 +57,22 @@ export class Signal<Type> {
     }
 
     /**
+     * method used to update the value of a signal using a custom function
+     * while triggering all the reactive functions in the dependencies
+     * @param {Function} func the new signal value
+     */
+    compute(func: (value: Type) => Type) {
+        // get the computation result
+        const computedValue = func(this.value);
+        // update the value
+        this.set(computedValue);
+    }
+
+    /**
      * method used to remove a reactive function from dependencies
      * @param {Reactive} reactive the reactive function to be cleared
      */
-    delete(reactive: Reactive): void {
+    delete(reactive: Reactive<AnyFunction>): void {
         // remove the reactive function from dependencies
         this[Symbols.dependencies].delete(reactive);
         // remove the signal from reactive function's dependencies
@@ -81,18 +94,19 @@ export class Signal<Type> {
 
 export class ComputedSignal<Type> extends Signal<Type> {
     /** @internal */
-    [Symbols.computation]: (value: any) => Type;
+    [Symbols.computation]: (value: Type) => Type;
     /** @internal */
-    [Symbols.reactive]: Reactive;
+    [Symbols.reactive]: Reactive<AnyFunction>;
     /** @internal */
-    entry: any;
+    entry: Type;
 
     /**
      * @see Signal.constructor create a computed signal
      * @param {Function} computation the signal computation function
      */
-    constructor(computation: (value: any) => Type) {
+    constructor(computation: (value: Type) => Type, initialValue: Type) {
         super();
+        this.entry = initialValue;
         this[Symbols.computation] = computation;
         this[Symbols.reactive] = new Reactive(() => this.set(this.entry));
         this[Symbols.reactive].use();
@@ -101,21 +115,19 @@ export class ComputedSignal<Type> extends Signal<Type> {
     /**
      * @see Signal.set executes the calculation function before returning the new value
      */
-    set(value?: any): Type {
+    set(value: Type): Type {
         // the current input is saved for signal recalculations
         this.entry = value;
         // get the computed result
-        value = this[Symbols.computation](value);
+        const computedValue = this[Symbols.computation](value);
         // return Signal.set
-        return super.set(value);
+        return super.set(computedValue);
     }
 
     /**
      * @see Signal.clear remove the entry property before clearing dependencies
      */
     clear(): void {
-        // clear default value
-        delete this.entry;
         // clear reactive computation dependencies
         if (this[Symbols.reactive]) {
             this[Symbols.reactive].clear();

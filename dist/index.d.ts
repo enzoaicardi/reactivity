@@ -1,6 +1,10 @@
 declare module "@enzoaicardi/reactivity/symbols" { }
+declare module "@enzoaicardi/reactivity/types" {
+    export type AnyFunction = (...args: any[]) => any;
+}
 declare module "@enzoaicardi/reactivity/signal" {
     import { Reactive } from "@enzoaicardi/reactivity/reactive";
+    import { AnyFunction } from "@enzoaicardi/reactivity/types";
     export class Signal<Type> {
         value: Type;
         /**
@@ -21,10 +25,16 @@ declare module "@enzoaicardi/reactivity/signal" {
          */
         set(value: Type): Type;
         /**
+         * method used to update the value of a signal using a custom function
+         * while triggering all the reactive functions in the dependencies
+         * @param {Function} func the new signal value
+         */
+        compute(func: (value: Type) => Type): void;
+        /**
          * method used to remove a reactive function from dependencies
          * @param {Reactive} reactive the reactive function to be cleared
          */
-        delete(reactive: Reactive): void;
+        delete(reactive: Reactive<AnyFunction>): void;
         /**
          * method used to remove all reactive functions from dependencies
          */
@@ -35,11 +45,11 @@ declare module "@enzoaicardi/reactivity/signal" {
          * @see Signal.constructor create a computed signal
          * @param {Function} computation the signal computation function
          */
-        constructor(computation: (value: any) => Type);
+        constructor(computation: (value: Type) => Type, initialValue: Type);
         /**
          * @see Signal.set executes the calculation function before returning the new value
          */
-        set(value?: any): Type;
+        set(value: Type): Type;
         /**
          * @see Signal.clear remove the entry property before clearing dependencies
          */
@@ -48,21 +58,14 @@ declare module "@enzoaicardi/reactivity/signal" {
 }
 declare module "@enzoaicardi/reactivity/reactive" {
     import { Signal } from "@enzoaicardi/reactivity/signal";
-    export class Reactive {
-        value: Function;
-        /**
-         * shortcut for constructor and instance.use
-         * used to avoid static analysis warnings
-         * @param func the reactive callback
-         * @param {...any?} args the reactive function arguments
-         * @returns {any} the reative function result
-         */
-        static use: (func: Function, ...args: any) => any;
+    import { AnyFunction } from "@enzoaicardi/reactivity/types";
+    export class Reactive<FunctionType extends AnyFunction> {
+        value: FunctionType;
         /**
          * create a reactive function
          * @param {Function} func the reactive callback
          */
-        constructor(func: Function);
+        constructor(func: FunctionType);
         /**
          * method used to manually add the reactive function to signal dependencies
          * @param {Signal} signal the signal in which to add the dependency
@@ -71,10 +74,10 @@ declare module "@enzoaicardi/reactivity/reactive" {
         /**
          * method used to trigger the reactive function
          * while changing the value of the current reactive function
-         * @param {...any?} args the reactive function arguments
-         * @returns {any} the reative function result
+         * @param {Parameters<FunctionType>} args the reactive function arguments
+         * @returns {ReturnType<FunctionType>} the reative function result
          */
-        use(...args: any): any;
+        use(...args: Parameters<FunctionType>): ReturnType<FunctionType>;
         /**
          * method used to remove a signal from dependencies
          * @param {Signal} signal the signal to be cleared

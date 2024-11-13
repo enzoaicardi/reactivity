@@ -1,33 +1,24 @@
 import { Signal } from "./signal";
 import { Symbols } from "./symbols";
+import { AnyFunction } from "./types";
 
-export class Reactive {
-    value: Function;
+export class Reactive<FunctionType extends AnyFunction> {
+    value: FunctionType;
     /** @internal */
     [Symbols.dependencies]: Set<Signal<any>>;
     /** @internal */
     [Symbols.registered]: boolean;
 
     /** @internal */
-    static [Symbols.current]: Reactive | null = null;
+    static [Symbols.current]: Reactive<AnyFunction> | null = null;
     /** @internal */
-    static [Symbols.initial]: Reactive | null = null;
-
-    /**
-     * shortcut for constructor and instance.use
-     * used to avoid static analysis warnings
-     * @param func the reactive callback
-     * @param {...any?} args the reactive function arguments
-     * @returns {any} the reative function result
-     */
-    static use = (func: Function, ...args: any): any =>
-        new Reactive(func).use(...args);
+    static [Symbols.initial]: Reactive<AnyFunction> | null = null;
 
     /**
      * create a reactive function
      * @param {Function} func the reactive callback
      */
-    constructor(func: Function) {
+    constructor(func: FunctionType) {
         this.value = func;
         this[Symbols.dependencies] = new Set();
         this[Symbols.registered] = false;
@@ -45,10 +36,10 @@ export class Reactive {
     /**
      * method used to trigger the reactive function
      * while changing the value of the current reactive function
-     * @param {...any?} args the reactive function arguments
-     * @returns {any} the reative function result
+     * @param {Parameters<FunctionType>} args the reactive function arguments
+     * @returns {ReturnType<FunctionType>} the reative function result
      */
-    use(...args: any): any {
+    use(...args: Parameters<FunctionType>): ReturnType<FunctionType> {
         // save the initial reactive function state
         Reactive[Symbols.initial] = Reactive[Symbols.current];
         // switch the current reactive function

@@ -6,8 +6,10 @@
         "declaration": true,
         "emitDeclarationOnly": true,
         "stripInternal": true,
+        "moduleResolution": "node",
         "outFile": "dist/index"
     },
     "rootDir": "src",
-    "include": ["src"]
+    "include": ["src"],
+    "exclude": ["./src/@enzoaicardi/reactivity/symbols.ts"]
 }

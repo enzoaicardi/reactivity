@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "module": "esnext",
+        "target": "esnext",
+        "lib": ["esnext", "dom"],
+        "declaration": true,
+        "emitDeclarationOnly": true,
+        "stripInternal": true,
+        "moduleResolution": "node"
+    },
+    "rootDir": "src",
+    "include": ["src"],
+    "exclude": ["./src/@enzoaicardi/reactivity/symbols.ts"]
+}

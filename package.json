@@ -1,9 +1,10 @@
 {
     "type": "module",
     "scripts": {
-        "build": "rollup --config rollup.config.js && dts-bundle-generator --project tsconfig.dts.json -o ./dist/index.d.ts src/@enzoaicardi/reactivity.ts",
+        "test": "bun test",
         "dev": "rollup --config rollup.config.js --watch",
-        "declare": "tsc --project tsconfig.tsc.json"
+        "build": "bun test && rollup --config rollup.config.js && dts-bundle-generator --project tsconfig.dts.json -o ./dist/index.d.ts src/@enzoaicardi/reactivity.ts",
+        "tsc": "tsc --project tsconfig.tsc.json"
     },
     "devDependencies": {
         "@rollup/plugin-terser": "^0.4.4",

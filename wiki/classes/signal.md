@@ -2,11 +2,12 @@
 
 ```js
 const signal = new Signal("initial state"); // create a new Signal
-const signalValue = signal.get(); // get the Signal value
-const signalSilentValue = signal.value; // get the Signal value without registering dependencies
+const signalValue = signal.get(); // get Signal value
+const signalSilentValue = signal.value; // get Signal value without registering dependencies
 
-signal.set("new state"); // update the Signal value
-signal.value = "new state"; //!\\ update the Signal value without triggering dependencies
+signal.set("new state"); // update Signal value
+signal.compute((value) => value + " computed"); // update Signal value based on function
+signal.value = "new state"; //!\\ update Signal value without triggering dependencies
 
 signal.delete(reactiveFunction); // clear the reactiveFunction in Signal dependencies
 signal.clear(); // clear all Signal dependencies

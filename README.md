@@ -39,13 +39,11 @@ counterLog.use(); // this will trigger counterLog and print "3" in the console
 # List of all exports
 
 -   [x] [Signal](https://github.com/enzoaicardi/reactivity/tree/main/wiki/classes/signal.md)
--   [x] [ComputedSignal](https://github.com/enzoaicardi/reactivity/tree/main/wiki/classes/computed-signal.md)
 -   [x] [Reactive](https://github.com/enzoaicardi/reactivity/tree/main/wiki/classes/reactive.md)
 
 ```js
 import {
     Signal, // used to create a signal
-    ComputedSignal, // used to create a computed signal
     Reactive, // used to create a reactive function
 } from "@enzoaicardi/reactivity"; // cdn at https://cdn.jsdelivr.net/npm/@enzoaicardi/reactivity@latest/esm/reactivity.js
 ```
@@ -59,15 +57,18 @@ npm install @enzoaicardi/reactivity
 ```
 
 ```js
-import { ... } from "@enzoaicardi/reactivity"; // es modules
-const { ... } = require("@enzoaicardi/reactivity"); // commonjs modules
+import { Signal, Reactive } from "@enzoaicardi/reactivity"; // es modules
+const { Signal, Reactive } = require("@enzoaicardi/reactivity"); // commonjs modules
 ```
 
 ## CDN import
 
 ```js
 // es modules
-import { ... } from "https://cdn.jsdelivr.net/npm/@enzoaicardi/reactivity@latest/esm/reactivity.js";
+import {
+    Signal,
+    Reactive,
+} from "https://cdn.jsdelivr.net/npm/@enzoaicardi/reactivity@latest/esm/reactivity.js";
 ```
 
 ```html
@@ -75,6 +76,6 @@ import { ... } from "https://cdn.jsdelivr.net/npm/@enzoaicardi/reactivity@latest
 <script src="https://cdn.jsdelivr.net/npm/@enzoaicardi/reactivity@latest/iife/reactivity.js"></script>
 <script>
     // global object destructuration
-    const { ... } = Reactivity;
+    const { Signal, Reactive } = Reactivity;
 </script>
 ```

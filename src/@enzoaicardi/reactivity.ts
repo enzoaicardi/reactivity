@@ -1,8 +1,4 @@
 import { Reactive } from "./reactivity/reactive";
-import { ComputedSignal, Signal } from "./reactivity/signal";
+import { Signal } from "./reactivity/signal";
 
-export {
-    Signal as Signal,
-    ComputedSignal as ComputedSignal,
-    Reactive as Reactive,
-};
+export { Signal as Signal, Reactive as Reactive };

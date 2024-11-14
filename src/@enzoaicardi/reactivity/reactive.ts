@@ -1,6 +1,7 @@
 import { Signal } from "./signal";
 import { Symbols } from "./symbols";
-import { AnyFunction } from "./types";
+
+export type AnyFunction = (...args: any) => any;
 
 export class Reactive<FunctionType extends AnyFunction> {
     value: FunctionType;

@@ -18,6 +18,15 @@ export class Signal<Type> {
     }
 
     /**
+     * method used to manually add the reactive function to signal dependencies
+     * @param {Reactive<AnyFunction>} reactive the reactive function to add as signal dependency
+     */
+    add(reactive: Reactive<AnyFunction>): void {
+        this[Symbols.dependencies].add(reactive);
+        reactive[Symbols.dependencies].add(this);
+    }
+
+    /**
      * method used to retrieve the value of a signal
      * while adding the current reactive function to the dependencies
      * @returns {Type} the signal value

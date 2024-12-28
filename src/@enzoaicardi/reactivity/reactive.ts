@@ -3,7 +3,7 @@ import { Symbols } from "./symbols";
 
 export type AnyFunction = (...args: any) => any;
 
-export class Reactive<FunctionType extends AnyFunction> {
+export class Reactive<FunctionType extends AnyFunction = AnyFunction> {
     value: FunctionType;
     /** @internal */
     [Symbols.dependencies]: Set<Signal<any>>;

@@ -1,21 +1,21 @@
 # Reactive class
 
 ```js
-// create reactive function
+// create a new reactive function
 const reactiveFunction = new Reactive(() =>
     console.log("The counter is: " + counter.get())
 );
+// create a new reactive function with dependencies
+const reactiveFunction = new Reactive(() => /* ... */, [signal, ...]);
 
-//!\\ create and use reactive function all in one
-const result = Reactive.use(() =>
-    console.log("The counter is: " + counter.get())
-);
+// trigger reactive function and automatically bind dependencies
+reactiveFunction.bind(...args);
 
 reactiveFunction.add(signal); // manually add reactive function to signal dependencies
 
-// manually trigger reactive function and populate signals dependencies
-const result = reactiveFunction.use(...args);
+// manually trigger reactive function without binding dependencies
+const result = reactiveFunction.call(...args);
 
-reactiveFunction.delete(signal); // clear the signal in Reactive dependencies
-reactiveFunction.clear(); // clear all Reactive dependencies
+reactiveFunction.delete(signal); // manually remove reactive function from signal dependencies
+reactiveFunction.clear(); // clear all dependencies
 ```

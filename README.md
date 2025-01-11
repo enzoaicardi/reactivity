@@ -26,14 +26,14 @@ const counter = new Signal(0);
 const counterLog = new Reactive(() => console.log(counter.get()));
 
 // activate counterLog
-counterLog.use(); // this will trigger counterLog and print "0" in the console
+counterLog.bind(); // this will trigger counterLog and print "0" in the console
 // or...
 counterLog.add(counter); // this will manually add counterLog to counter dependencies
 
 counter.set(1); // this will trigger counterLog and print "1" in the console
 counter.set(counter.value + 2); // this will trigger counterLog and print "3" in the console
 
-counterLog.use(); // this will trigger counterLog and print "3" in the console
+counterLog.bind(); // this will trigger counterLog and print "3" in the console
 ```
 
 # List of all exports

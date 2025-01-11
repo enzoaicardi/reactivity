@@ -1,6 +1,5 @@
 import { test, expect } from "bun:test";
 import { Reactive, Signal } from "../src/@enzoaicardi/reactivity";
-import { Symbols } from "../src/@enzoaicardi/reactivity/symbols";
 
 test("signal: set, get, compute", () => {
     // init
@@ -19,7 +18,7 @@ test("reactive: set, get, compute", () => {
     let number: number = 0;
     const signal = new Signal(0);
     const reactive = new Reactive(() => (number = signal.get()));
-    reactive.use();
+    reactive.bind();
     expect(number).toBe(0);
     // update
     signal.set(1);
@@ -33,22 +32,36 @@ test("dependencies: auto, add, delete, clear", () => {
     const signalAuto = new Signal(0);
     const signalManual = new Signal(0);
     const reactive = new Reactive(() => signalAuto.get());
-    reactive.use();
+    reactive.bind();
     // auto
-    expect(reactive[Symbols.dependencies].size).toBe(1);
-    expect(signalAuto[Symbols.dependencies].size).toBe(1);
+    expect(reactive.dependencies.size).toBe(1);
+    expect(signalAuto.dependencies.size).toBe(1);
     // add
     reactive.add(signalManual);
-    expect(reactive[Symbols.dependencies].size).toBe(2);
-    expect(signalManual[Symbols.dependencies].size).toBe(1);
+    expect(reactive.dependencies.size).toBe(2);
+    expect(signalManual.dependencies.size).toBe(1);
     // delete
     reactive.delete(signalAuto);
-    expect(reactive[Symbols.dependencies].size).toBe(1);
-    expect(signalAuto[Symbols.dependencies].size).toBe(0);
+    expect(reactive.dependencies.size).toBe(1);
+    expect(signalAuto.dependencies.size).toBe(0);
     // clear
     signalManual.clear();
-    expect(reactive[Symbols.dependencies].size).toBe(0);
+    expect(reactive.dependencies.size).toBe(0);
     reactive.add(signalManual);
     reactive.clear();
-    expect(reactive[Symbols.dependencies].size).toBe(0);
+    expect(reactive.dependencies.size).toBe(0);
+});
+
+test("memory leak", () => {
+    const signal = new Signal(1);
+    const reactive = new Reactive(() => signal.get());
+    reactive.bind();
+
+    const reactiveInfiniteLoop = new Reactive(() => {
+        if (signal.value > 1) {
+            throw "Infinite loop";
+        }
+        signal.set(signal.value + 1);
+    });
+    reactiveInfiniteLoop.bind();
 });

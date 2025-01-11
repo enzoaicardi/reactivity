@@ -2,16 +2,13 @@
 
 export declare class Signal<Type> {
 	value: Type;
+	dependencies: Set<Reactive<AnyFunction>>;
 	/**
 	 * create a signal
 	 * @param {Type?} value the inital signal state
+	 * @param {Reactive<AnyFunction>[]?} reactives the dependencies
 	 */
-	constructor(value?: Type);
-	/**
-	 * method used to manually add the reactive function to signal dependencies
-	 * @param {Reactive<AnyFunction>} reactive the reactive function to add as signal dependency
-	 */
-	add(reactive: Reactive<AnyFunction>): void;
+	constructor(value?: Type, reactives?: Reactive<AnyFunction>[]);
 	/**
 	 * method used to retrieve the value of a signal
 	 * while adding the current reactive function to the dependencies
@@ -27,44 +24,58 @@ export declare class Signal<Type> {
 	/**
 	 * method used to update the value of a signal using a custom function
 	 * while triggering all the reactive functions in the dependencies
-	 * @param {Function} func the new signal value
+	 * @param {Function} callback the new signal value
 	 */
-	compute(func: (value: Type) => Type): void;
+	compute(callback: (value: Type) => Type): void;
 	/**
-	 * method used to remove a reactive function from dependencies
-	 * @param {Reactive} reactive the reactive function to be cleared
+	 * method used to manually add reactive functions to signal dependencies
+	 * @param {Reactive<AnyFunction>[]} reactives reactive functions to add as signal dependency
 	 */
-	delete(reactive: Reactive<AnyFunction>): void;
+	add(...reactives: Reactive<AnyFunction>[]): void;
+	/**
+	 * method used to remove reactive functions from dependencies
+	 * @param {Reactive<AnyFunction>[]} reactives reactive functions to be cleared
+	 */
+	delete(...reactives: Reactive<AnyFunction>[]): void;
 	/**
 	 * method used to remove all reactive functions from dependencies
 	 */
 	clear(): void;
 }
 export type AnyFunction = (...args: any) => any;
-export declare class Reactive<FunctionType extends AnyFunction> {
+export declare class Reactive<FunctionType extends AnyFunction = AnyFunction> {
 	value: FunctionType;
+	dependencies: Set<Signal<any>>;
 	/**
 	 * create a reactive function
-	 * @param {Function} func the reactive callback
+	 * @param {Function} callback the reactive callback
+	 * @param {Signal<any>[]?} signals the dependencies
 	 */
-	constructor(func: FunctionType);
-	/**
-	 * method used to manually add the reactive function to signal dependencies
-	 * @param {Signal} signal the signal in which to add the dependency
-	 */
-	add(signal: Signal<any>): void;
+	constructor(callback: FunctionType, signals?: Signal<any>[]);
 	/**
 	 * method used to trigger the reactive function
-	 * while changing the value of the current reactive function
+	 * while changing the value of the current reactive function to null
 	 * @param {Parameters<FunctionType>} args the reactive function arguments
 	 * @returns {ReturnType<FunctionType>} the reative function result
 	 */
-	use(...args: Parameters<FunctionType>): ReturnType<FunctionType>;
+	call(...args: Parameters<FunctionType>): ReturnType<FunctionType>;
 	/**
-	 * method used to remove a signal from dependencies
-	 * @param {Signal} signal the signal to be cleared
+	 * method used to trigger the reactive function
+	 * while changing the value of the current reactive function to this
+	 * @param {Parameters<FunctionType>} args the reactive function arguments
+	 * @returns {ReturnType<FunctionType>} the reative function result
 	 */
-	delete(signal: Signal<any>): void;
+	bind(...args: Parameters<FunctionType>): ReturnType<FunctionType>;
+	/**
+	 * method used to manually add reactive function to signals dependencies
+	 * @param {Signal[]} signals the signals in which to add the dependency
+	 */
+	add(...signals: Signal<any>[]): void;
+	/**
+	 * method used to remove signals from dependencies
+	 * @param {Signal[]} signals the signals to be cleared
+	 */
+	delete(...signals: Signal<any>[]): void;
 	/**
 	 * method used to remove all signals from dependencies
 	 */

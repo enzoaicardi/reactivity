@@ -25,15 +25,15 @@ If this description sounds complicated, in practice using a signal is very simpl
 const counter = new Signal(0);
 const counterLog = new Reactive(() => console.log(counter.get()));
 
-// activate counterLog
-counterLog.use(); // this will trigger counterLog and print "0" in the console
-// or...
+// automatically bind counterLog dependencies
+counterLog.bind(); // this will trigger counterLog and print "0" in the console
+// or manually bind counterLog dependencies
 counterLog.add(counter); // this will manually add counterLog to counter dependencies
 
 counter.set(1); // this will trigger counterLog and print "1" in the console
 counter.set(counter.value + 2); // this will trigger counterLog and print "3" in the console
 
-counterLog.use(); // this will trigger counterLog and print "3" in the console
+counterLog.call(); // this will trigger counterLog and print "3" in the console
 ```
 
 # List of all exports

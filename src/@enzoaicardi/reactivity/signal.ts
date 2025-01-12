@@ -8,14 +8,10 @@ export class Signal<Type> {
     /**
      * create a signal
      * @param {Type?} value the inital signal state
-     * @param {Reactive<AnyFunction>[]?} reactives the dependencies
      */
-    constructor(value?: Type, reactives?: Reactive<AnyFunction>[]) {
+    constructor(value?: Type) {
         if (typeof value !== "undefined") {
             this.value = value;
-        }
-        if (reactives) {
-            this.add(...reactives);
         }
     }
 
@@ -33,6 +29,7 @@ export class Signal<Type> {
             this.add(reactive);
         }
 
+        // return the signal value
         return this.value;
     }
 
@@ -60,37 +57,34 @@ export class Signal<Type> {
      * while triggering all the reactive functions in the dependencies
      * @param {Function} callback the new signal value
      */
-    compute(callback: (value: Type) => Type) {
+    compute(callback: (value: Type) => Type): Type {
         // get the computation result
         const computedValue = callback(this.value);
         // update the value
-        this.set(computedValue);
+        return this.set(computedValue);
     }
 
     /**
-     * method used to manually add reactive functions to signal dependencies
-     * @param {Reactive<AnyFunction>[]} reactives reactive functions to add as signal dependency
+     * method used to manually add reactive function to signal dependencies
+     * @param {Reactive<AnyFunction>} reactive reactive function to add as signal dependency
      */
-    add(...reactives: Reactive<AnyFunction>[]): void {
-        for (const reactive of reactives) {
-            // add the reactive function to dependencies
-            this.dependencies.add(reactive);
-            // add the signal to reactive function's dependencies
-            reactive.dependencies.add(this);
-        }
+    add(reactive: Reactive<AnyFunction>): this {
+        // add the signal to reactive function's dependencies
+        reactive.dependencies.add(this);
+        // add the reactive function to dependencies
+        this.dependencies.add(reactive);
+        return this;
     }
 
     /**
-     * method used to remove reactive functions from dependencies
-     * @param {Reactive<AnyFunction>[]} reactives reactive functions to be cleared
+     * method used to remove reactive function from dependencies
+     * @param {Reactive<AnyFunction>} reactive reactive function to be cleared
      */
-    delete(...reactives: Reactive<AnyFunction>[]): void {
-        for (const reactive of reactives) {
-            // remove the reactive function from dependencies
-            this.dependencies.delete(reactive);
-            // remove the signal from reactive function's dependencies
-            reactive.dependencies.delete(this);
-        }
+    delete(reactive: Reactive<AnyFunction>): boolean {
+        // remove the signal from reactive function's dependencies
+        reactive.dependencies.delete(this);
+        // remove the reactive function from dependencies
+        return this.dependencies.delete(reactive);
     }
 
     /**

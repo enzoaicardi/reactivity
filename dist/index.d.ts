@@ -6,9 +6,8 @@ export declare class Signal<Type> {
 	/**
 	 * create a signal
 	 * @param {Type?} value the inital signal state
-	 * @param {Reactive<AnyFunction>[]?} reactives the dependencies
 	 */
-	constructor(value?: Type, reactives?: Reactive<AnyFunction>[]);
+	constructor(value?: Type);
 	/**
 	 * method used to retrieve the value of a signal
 	 * while adding the current reactive function to the dependencies
@@ -26,17 +25,17 @@ export declare class Signal<Type> {
 	 * while triggering all the reactive functions in the dependencies
 	 * @param {Function} callback the new signal value
 	 */
-	compute(callback: (value: Type) => Type): void;
+	compute(callback: (value: Type) => Type): Type;
 	/**
-	 * method used to manually add reactive functions to signal dependencies
-	 * @param {Reactive<AnyFunction>[]} reactives reactive functions to add as signal dependency
+	 * method used to manually add reactive function to signal dependencies
+	 * @param {Reactive<AnyFunction>} reactive reactive function to add as signal dependency
 	 */
-	add(...reactives: Reactive<AnyFunction>[]): void;
+	add(reactive: Reactive<AnyFunction>): this;
 	/**
-	 * method used to remove reactive functions from dependencies
-	 * @param {Reactive<AnyFunction>[]} reactives reactive functions to be cleared
+	 * method used to remove reactive function from dependencies
+	 * @param {Reactive<AnyFunction>} reactive reactive function to be cleared
 	 */
-	delete(...reactives: Reactive<AnyFunction>[]): void;
+	delete(reactive: Reactive<AnyFunction>): boolean;
 	/**
 	 * method used to remove all reactive functions from dependencies
 	 */
@@ -49,9 +48,8 @@ export declare class Reactive<FunctionType extends AnyFunction = AnyFunction> {
 	/**
 	 * create a reactive function
 	 * @param {Function} callback the reactive callback
-	 * @param {Signal<any>[]?} signals the dependencies
 	 */
-	constructor(callback: FunctionType, signals?: Signal<any>[]);
+	constructor(callback: FunctionType);
 	/**
 	 * method used to trigger the reactive function
 	 * while changing the value of the current reactive function to null
@@ -63,19 +61,18 @@ export declare class Reactive<FunctionType extends AnyFunction = AnyFunction> {
 	 * method used to trigger the reactive function
 	 * while changing the value of the current reactive function to this
 	 * @param {Parameters<FunctionType>} args the reactive function arguments
-	 * @returns {ReturnType<FunctionType>} the reative function result
 	 */
-	bind(...args: Parameters<FunctionType>): ReturnType<FunctionType>;
+	bind(...args: Parameters<FunctionType>): this;
 	/**
-	 * method used to manually add reactive function to signals dependencies
-	 * @param {Signal[]} signals the signals in which to add the dependency
+	 * method used to manually add reactive function to signal dependencies
+	 * @param {Signal} signal the signal in which to add the dependency
 	 */
-	add(...signals: Signal<any>[]): void;
+	add(signal: Signal<any>): this;
 	/**
-	 * method used to remove signals from dependencies
-	 * @param {Signal[]} signals the signals to be cleared
+	 * method used to remove signal from dependencies
+	 * @param {Signal} signal the signal to be cleared
 	 */
-	delete(...signals: Signal<any>[]): void;
+	delete(signal: Signal<any>): boolean;
 	/**
 	 * method used to remove all signals from dependencies
 	 */

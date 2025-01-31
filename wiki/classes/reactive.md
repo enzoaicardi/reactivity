@@ -6,7 +6,7 @@ const reactiveFunction = new Reactive(() =>
     console.log("The counter is: " + counter.get())
 );
 // create a new reactive function with dependencies
-const reactiveFunction = new Reactive(() => /* ... */).add(signal, ...);
+const reactiveFunction = new Reactive(() => /* ... */).add(signal).add(...);
 
 // trigger reactive function and automatically bind dependencies
 reactiveFunction.bind(...args);

@@ -2,7 +2,7 @@
 
 ```js
 const signal = new Signal("initial state"); // create a new signal
-const signal = new Signal("initial state").add(reactiveFunction, ...); // create a new signal with dependencies
+const signal = new Signal("initial state").add(reactiveFunction).add(...); // create a new signal with dependencies
 const signalValue = signal.get(); // get signal value
 const signalSilentValue = signal.value; // get signal value without triggering dependencies
 

@@ -5,9 +5,9 @@ export declare class Signal<Type> {
 	dependencies: Set<Reactive<AnyFunction>>;
 	/**
 	 * create a signal
-	 * @param {Type?} value the inital signal state
+	 * @param {Type} value the inital signal state value
 	 */
-	constructor(value?: Type);
+	constructor(value: Type);
 	/**
 	 * method used to retrieve the value of a signal
 	 * while adding the current reactive function to the dependencies

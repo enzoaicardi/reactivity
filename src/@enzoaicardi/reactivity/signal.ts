@@ -7,12 +7,10 @@ export class Signal<Type> {
 
     /**
      * create a signal
-     * @param {Type?} value the inital signal state
+     * @param {Type} value the inital signal state value
      */
-    constructor(value?: Type) {
-        if (typeof value !== "undefined") {
-            this.value = value;
-        }
+    constructor(value: Type) {
+        this.value = value;
     }
 
     /**
